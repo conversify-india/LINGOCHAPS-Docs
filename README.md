@@ -8,9 +8,9 @@ Welcome to the central repository for **Lingo Chaps** operational standards and 
 
 | Asset | Purpose | Access |
 | :--- | :--- | :--- |
-| **YouTube Project Guide** | End-to-end execution manual for YouTube video projects. | `youtube_project_guide.html` |"https://youtubeprojectportal.netlify.app"/
-| **Translator Portal** | Execution dashboard specifically for linguists and translators. | `youtube_translator_portal.html` |
-| **Internal Onboarding** | Comprehensive training manual for new team members. | `internal_onboarding.html` |"https://lingochapsinternal.netlify.app"/
+| **YouTube Project Guide** | End-to-end execution manual for YouTube video projects. | [Live Link](https://youtubeprojectportal.netlify.app) |
+| **Translator Portal** | Execution dashboard specifically for linguists and translators. | [Access Portal](youtube_translator_portal.html) |
+| **Internal Onboarding** | Comprehensive training manual for new team members. | [Live Link](https://lingochapsinternal.netlify.app) |
 
 ---
 
