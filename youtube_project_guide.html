@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Project Guide | Lingo Chaps</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --text-dark: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+            --sidebar-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --section-bg: #f8fafc;
+            --rule-bg: #fef2f2;
+            --rule-text: #991b1b;
+            --example-bg: #1e293b;
+        }
+
+        body.dark-mode {
+            --bg: #0f172a;
+            --text-dark: #f1f5f9;
+            --text-light: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --card-bg: #1e293b;
+            --sidebar-bg: #111827;
+            --section-bg: #1e293b;
+            --rule-bg: rgba(239, 68, 68, 0.1);
+            --rule-text: #fca5a5;
+            --secondary-bg: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg);
+            line-height: 1.6;
+            transition: 0.3s;
+        }
+
+        header {
+            height: 64px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 1000;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .layout-container {
+            display: flex;
+            min-height: calc(100vh - 64px);
+        }
+
+        aside {
+            width: 300px;
+            border-right: 1px solid var(--border);
+            background: var(--sidebar-bg);
+            padding: 2rem 1rem;
+            position: sticky;
+            top: 64px;
+            height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .toc-title {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+
+        .nav-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            transition: 0.2s;
+            font-weight: 600;
+        }
+
+        .nav-item a:hover {
+            color: var(--primary);
+            background: rgba(79, 70, 229, 0.05);
+        }
+
+        .nav-item a.active {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 114, 229, 0.2);
+        }
+
+        /* COLLAPSIBLE SIDEBAR LOGIC */
+        .nav-category {
+            margin-bottom: 1rem;
+        }
+
+        .nav-category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-category-header:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .nav-category-header .toc-title {
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-category-header i {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            transition: transform 0.3s;
+        }
+
+        .nav-category.collapsed .nav-list {
+            display: none;
+        }
+
+        .nav-category.collapsed .nav-category-header i {
+            transform: rotate(-90deg);
+        }
+
+        .nav-sub-menu {
+            list-style: none;
+            padding-left: 1.5rem;
+            margin-bottom: 10px;
+            border-left: 2px solid var(--border);
+            margin-left: 2rem;
+            margin-top: -5px;
+        }
+
+        .nav-sub-menu li a {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        .nav-sub-menu li a:hover {
+            opacity: 1;
+            color: var(--secondary);
+        }
+
+        main {
+            flex: 1;
+            padding: 3rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            scroll-margin-top: 100px;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 1.5rem;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .mission-badge {
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CARDS & BLOCKS */
+        .briefing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .briefing-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+        }
+
+        .briefing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-block {
+            padding: 1.5rem;
+            border-radius: 16px;
+            border-left: 5px solid var(--primary);
+            font-size: 0.95rem;
+            margin-top: 1.5rem;
+        }
+
+        .action-block p:first-child {
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .action-danger {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .action-primary {
+            background: rgba(59, 130, 246, 0.08);
+            border-color: #3b82f6;
+            color: #1e40af;
+        }
+
+        .action-warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .action-success {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: var(--secondary);
+            color: #166534;
+        }
+
+        .protocol-box {
+            background: var(--sidebar-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* ROADMAP */
+        .roadmap-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .roadmap-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .roadmap-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .roadmap-line {
+            position: absolute;
+            top: 40px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .roadmap-step-item {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 120px;
+        }
+
+        .roadmap-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            transition: 0.3s;
+            font-size: 1.5rem;
+        }
+
+        .roadmap-icon.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .phase-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .step-text {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        /* HIERARCHY */
+        .hierarchy-tree {
+            background: var(--section-bg);
+            border-radius: 24px;
+            padding: 3rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .tree-branch {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tree-branch::before {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: -15px;
+            bottom: 20px;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .tree-branch.root::before {
+            display: none;
+        }
+
+        .tree-leaf {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .leaf-hint {
+            font-weight: 400;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-left: 5px;
+            font-style: italic;
+        }
+
+        /* QC BADGES */
+        .step-badge {
+            background: var(--primary);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .step-title-ss {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .step-desc-ss {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .rule-card {
+            background: #f1f5f9;
+            border-left: 5px solid var(--secondary);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            color: var(--text-dark);
+        }
+
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1024px) {
+            .briefing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                width: 240px;
+            }
+        }
+    </style>
+</head>
+
+<body class="light-mode">
+    <header>
+        <a href="#" class="logo">
+            <i class="fab fa-youtube"></i>
+            <span>YouTube Project Portal</span>
+        </a>
+        <button class="theme-toggle" id="theme-toggle"><i class="fas fa-moon"></i></button>
+    </header>
+
+    <div class="layout-container">
+        <aside>
+            <div class="nav-category">
+                <div class="nav-category-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <p class="toc-title">Operational Flow</p>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <nav class="nav-list">
+                    <ul style="list-style: none;">
+                        <li class="nav-item">
+                            <a href="#yt-intake" class="active"><i class="fas fa-inbox"></i> Intake & Comm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#yt-allocation"><i class="fas fa-tasks"></i> Resource Allocation</a>
+                            <ul class="nav-sub-menu">
+                                <li><a href="#yt-allocation-guide"><i class="fas fa-table"></i> Allocation Guide</a></li>
+                                <li><a href="#yt-template-guide"><i class="fas fa-file-word"></i> Template Guide</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="nav-category collapsed">
+                <div class="nav-category-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <p class="toc-title">Reviewer</p>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <nav class="nav-list">
+                    <ul style="list-style: none;">
+                        <li class="nav-item">
+                            <a href="#yt-qc"><i class="fas fa-shield-alt"></i> QC Protocols</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#yt-handover"><i class="fas fa-file-export"></i> Final Handover</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main>
+            <section id="yt-intake">
+                <div class="mission-badge"><i class="fas fa-broadcast-tower"></i> Intake & Global Communications</div>
+                <h1>Mission Critical: Intake Protocols</h1>
+
+                <div class="action-block action-danger" style="margin-bottom: 2.5rem;">
+                    <p><i class="fas fa-bolt"></i> CRITICAL REQUIREMENT: INSTANT REPLY</p>
+                    <p style="font-size: 1.1rem;">Clients for YouTube projects operate via <b>WhatsApp and Email</b>. An
+                        <b>Instant Reply</b> is mandatory. Team members must acknowledge receipt within <b>2-5
+                            minutes</b> to maintain trust and engagement.</p>
+                </div>
+
+                <div class="briefing-grid">
+                    <div class="briefing-card">
+                        <h3 style="margin-bottom: 1.5rem; font-weight: 800;"><i class="fas fa-globe-americas"
+                                style="color: var(--primary); margin-right: 10px;"></i> Timezone Audit</h3>
+                        <p style="color: var(--text-light); margin-bottom: 1.5rem;">The Project Manager or Associate
+                            <b>must check the client's timezone</b> before accepting tasks. This ensures delivery slots
+                            are realistic for translators.</p>
+                        <div class="protocol-box">
+                            <ul style="list-style: none; font-size: 0.9rem;">
+                                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle"
+                                        style="color: var(--secondary); margin-right: 10px;"></i> Align client deadline
+                                    with translator active hours.</li>
+                                <li style="margin-bottom: 12px;"><i class="fas fa-check-circle"
+                                        style="color: var(--secondary); margin-right: 10px;"></i> Confirm resource
+                                    bandwidth before "Proceed" signal.</li>
+                                <li><i class="fas fa-check-circle"
+                                        style="color: var(--secondary); margin-right: 10px;"></i> Communicate ETA only
+                                    after resource confirmation.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="briefing-card">
+                        <h3 style="margin-bottom: 1.5rem; font-weight: 800;"><i class="fab fa-whatsapp"
+                                style="color: #25D366; margin-right: 10px;"></i> Forwarding Protocol</h3>
+                        <p style="color: var(--text-light); margin-bottom: 1.5rem;">All client communications must be
+                            instantly mirrored to the relevant internal whatsapp execution groups.</p>
+                        <div class="action-block action-primary">
+                            <p>REQUIRED MESSAGES TO FORWARD:</p>
+                            <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.9rem;">
+                                <li><b>ETA:</b> Send internal deadline expectations immediately.</li>
+                                <li><b>Proceed:</b> Official green-light for translators.</li>
+                                <li><b>Video Link:</b> Direct raw links sent by the client.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yt-allocation">
+                <div class="mission-badge"><i class="fas fa-users-cog"></i> Resource Management</div>
+                <h2>Allocation & Template Integrity</h2>
+
+                <div class="roadmap-container">
+                    <div class="roadmap-header"><i class="fas fa-stream"></i> Allocation Lifecycle</div>
+                    <div class="roadmap-grid">
+                        <div class="roadmap-line"></div>
+                        <div class="roadmap-step-item">
+                            <div class="roadmap-icon active"><i class="fas fa-user-plus"></i></div>
+                            <span class="phase-tag">Stage 1</span>
+                            <span class="step-text">Resource Mapping</span>
+                        </div>
+                        <div class="roadmap-step-item">
+                            <div class="roadmap-icon active"><i class="fas fa-file-word"></i></div>
+                            <span class="phase-tag">Stage 2</span>
+                            <span class="step-text">Fill Template</span>
+                        </div>
+                        <div class="roadmap-step-item">
+                            <div class="roadmap-icon active"><i class="fas fa-table"></i></div>
+                            <span class="phase-tag">Stage 3</span>
+                            <span class="step-text">Sync Allocation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="briefing-card" style="border-left: 6px solid var(--primary);">
+                    <h3 style="margin-bottom: 1rem; font-weight: 900;">Zero-Delay Maintenance</h3>
+                    <p style="margin-bottom: 2rem; font-size: 1.1rem;">The 
+                        <a href="#" target="_blank" style="color: var(--primary); text-decoration: none; border-bottom: 1px dashed var(--primary); font-weight: 800;">Allocation Sheet</a> 
+                        and 
+                        <a href="https://docs.google.com/document/d/1gTiB74pnqVyTUaIiLeyjnOSIVFV1fia6T33y83xi0o4/edit?tab=t.0" target="_blank" style="color: var(--secondary); text-decoration: none; border-bottom: 1px dashed var(--secondary); font-weight: 800;">Template.docx</a> 
+                        must be updated <u>every day</u>. No delays or formatting mistakes are permitted.</p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                        <div class="protocol-box" style="background: #eff6ff; border-color: #bfdbfe; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: var(--primary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                                    Allocation Sheet</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem;">Maintains real-time status of translator IDs, language pairs, and progress milestones.</p>
+                            </div>
+                            <a href="#" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #1e40af; color: white; padding: 10px 18px; border-radius: 12px; text-decoration: none; font-size: 0.85rem; font-weight: 700; width: fit-content; transition: 0.3s;">
+                                <i class="fab fa-google-drive"></i> Open Allocation Sheet
+                            </a>
+                        </div>
+                        
+                        <div class="protocol-box" style="background: #f0fdf4; border-color: #bbf7d0; display: flex; flex-direction: column; justify-content: space-between;">
+                            <div>
+                                <h4 style="margin-bottom: 10px; color: var(--secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">
+                                    Template.docx</h4>
+                                <p style="font-size: 0.9rem; opacity: 0.9; margin-bottom: 1.5rem;">Standardized formatting output. Must adhere strictly to the provided instruction manual.</p>
+                            </div>
+                            <a href="https://docs.google.com/document/d/1gTiB74pnqVyTUaIiLeyjnOSIVFV1fia6T33y83xi0o4/edit?tab=t.0" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: #166534; color: white; padding: 10px 18px; border-radius: 12px; text-decoration: none; font-size: 0.85rem; font-weight: 700; width: fit-content; transition: 0.3s;">
+                                <i class="fab fa-google-drive"></i> Access Drive Template
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yt-allocation-guide">
+                <div class="mission-badge"><i class="fas fa-database"></i> Data Integrity</div>
+                <h2>Allocation Sheet: Master Inventory Guide</h2>
+
+                <div class="briefing-card">
+                    <h3 style="margin-bottom: 2rem; font-weight: 800;"><i class="fas fa-columns" style="color: var(--primary); margin-right: 10px;"></i> Understanding the Columns</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                        <div>
+                            <div style="margin-bottom: 25px;">
+                                <h4 style="color: var(--primary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">1. Operational Ownership</h4>
+                                <ul style="list-style: none; font-size: 0.9rem; line-height: 1.8;">
+                                    <li><b>Task accepted by:</b> The internal PM responsible for the task.</li>
+                                    <li><b>Date of Enrollment:</b> When the project hit our system.</li>
+                                    <li><b>Assigned on:</b> The source platform (e.g., Lumos).</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">2. Resource & Delivery</h4>
+                                <ul style="list-style: none; font-size: 0.9rem; line-height: 1.8;">
+                                    <li><b>Translators:</b> The specific linguist assigned to the ID.</li>
+                                    <li><b>Deadline:</b> Strict cutoff times (typically 5:30 PM or 9:00 PM).</li>
+                                    <li><b>Total minutes done:</b> Real-time completion tracking.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div style="background: #f8fafc; padding: 2rem; border-radius: 20px; border: 1px solid var(--border);">
+                            <h4 style="font-weight: 800; margin-bottom: 1.5rem;"><i class="fas fa-link" style="margin-right: 10px;"></i> Asset Mapping</h4>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div style="background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
+                                    <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-light);">COLUMN G</p>
+                                    <p style="font-size: 0.9rem; font-weight: 700;">Video Link (YouTube Source)</p>
+                                </div>
+                                <div style="background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
+                                    <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-light);">COLUMN H</p>
+                                    <p style="font-size: 0.9rem; font-weight: 700;">Doc Link (Production File)</p>
+                                </div>
+                                <div style="background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border);">
+                                    <p style="font-size: 0.75rem; font-weight: 800; color: var(--text-light);">COLUMN I</p>
+                                    <p style="font-size: 0.9rem; font-weight: 700;">Duration (Timestamp Range)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-block action-primary" style="margin-top: 2rem;">
+                        <p><strong>MAINTENANCE RULE:</strong> Every task must have a "Minutes assigned" vs "Minutes done" match before being moved to the final archive.</p>
+                    </div>
+                </div>
+            </section>
+            <section id="yt-template-guide">
+                <div class="mission-badge"><i class="fas fa-file-signature"></i> Asset Completion</div>
+                <h2>Template Architecture & Completion</h2>
+
+                <div class="briefing-card" style="border-top: 4px solid var(--secondary);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h3 style="margin-bottom: 1.5rem; font-weight: 800; color: var(--secondary);">
+                                <i class="fas fa-edit"></i> Required Data Fields
+                            </h3>
+                            <ul style="list-style: none; font-size: 0.95rem;">
+                                <li style="margin-bottom: 12px; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-square" style="color: var(--secondary);"></i>
+                                    <span><b>Header Info:</b> Video Title, Link, Target Language, and Profile Name.</span>
+                                </li>
+                                <li style="margin-bottom: 12px; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-square" style="color: var(--secondary);"></i>
+                                    <span><b>Video Summary:</b> A concise 2-3 line overview of the content.</span>
+                                </li>
+                                <li style="margin-bottom: 12px; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-square" style="color: var(--secondary);"></i>
+                                    <span><b>Metadata:</b> Translated Video Description and Thumbnail Text.</span>
+                                </li>
+                                <li style="margin-bottom: 12px; display: flex; gap: 10px;">
+                                    <i class="fas fa-check-square" style="color: var(--secondary);"></i>
+                                    <span><b>Additional Comments:</b> Notes on specific terminology or nuances.</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div style="background: #f8fafc; padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border);">
+                            <h3 style="margin-bottom: 1.5rem; font-weight: 800;">
+                                <i class="fas fa-list-ol"></i> Execution Rules
+                            </h3>
+                            <div style="font-size: 0.9rem; color: var(--text-light);">
+                                <p style="margin-bottom: 10px;">1. <b>Timestamping:</b> Must follow (HH:MM:SS) format per minute.</p>
+                                <p style="margin-bottom: 10px;">2. <b>Cultural Adaptation:</b> Translate idioms/slang for context, not literally. Provide English equivalent in brackets if needed.</p>
+                                <p style="margin-bottom: 10px;">3. <b>Speaker ID:</b> Clearly identify Speaker A, B, etc., as they speak.</p>
+                                <p style="margin-bottom: 10px; color: var(--danger); font-weight: 700;">4. <b>Manual Only:</b> Absolutely NO Machine Translation allowed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yt-pipeline">
+                <div class="mission-badge"><i class="fas fa-server"></i> File Infrastructure</div>
+                <h2>File Pipeline & Drive Management</h2>
+
+                <div class="hierarchy-tree">
+                    <div class="tree-branch root">
+                        <div class="tree-leaf"><i class="fas fa-download" style="color: var(--primary);"></i> 1.
+                            Download Client Video <span class="leaf-hint">(Save to local system first)</span></div>
+                    </div>
+                    <div class="tree-branch">
+                        <div class="tree-leaf"><i class="fas fa-signature" style="color: var(--primary);"></i> 2. Apply
+                            Standard Naming</div>
+                        <div class="action-block action-warning" style="margin-left: 2rem; max-width: 500px;">
+                            <p>STRICT FORMAT: languagename_timestamp(hh:mm:ss)</p>
+                            <p style="font-size: 1.1rem; font-family: monospace; font-weight: 700;">Spanish_00:12:04</p>
+                        </div>
+                    </div>
+                    <div class="tree-branch">
+                        <div class="tree-leaf"><i class="fab fa-google-drive" style="color: var(--primary);"></i> 3.
+                            Upload to Google Drive <span class="leaf-hint">(Into designated project folder)</span></div>
+                    </div>
+                    <div class="tree-branch">
+                        <div class="tree-leaf"><i class="fas fa-image" style="color: var(--primary);"></i> 4. Thumbnail
+                            Retrieval <span class="leaf-hint">(Download from specific company link)</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yt-qc">
+                <div class="mission-badge"><i class="fas fa-shield-alt"></i> Quality Assurance</div>
+                <h2>Review Protocols & Quality Control</h2>
+
+                <div class="briefing-grid">
+                    <div class="briefing-card">
+                        <div class="step-badge">P1</div>
+                        <h3 class="step-title-ss">Phase 1: Structural Audit</h3>
+                        <p class="step-desc-ss">Technical verification of metadata and assets.</p>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-file-alt" style="color: var(--primary); margin-top: 4px;"></i>
+                                <div><b>OST Verification:</b> Check Original Script/Text against source audio.</div>
+                            </li>
+                            <li style="margin-bottom: 15px; display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-tags" style="color: var(--primary); margin-top: 4px;"></i>
+                                <div><b>Metadata Check:</b> Verify titles, tags, and description formatting.</div>
+                            </li>
+                            <li style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-globe" style="color: var(--primary); margin-top: 4px;"></i>
+                                <div><b>Language ID:</b> Confirm correct dialect and regional markers.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="briefing-card">
+                        <div class="step-badge" style="background: var(--secondary);">P2</div>
+                        <h3 class="step-title-ss">Phase 2: Linguistic Depth</h3>
+                        <p class="step-desc-ss">Human review of sync, tone, and nuances.</p>
+                        <div class="protocol-box">
+                            <p style="margin-bottom: 12px;"><b>Active Audio Listening:</b> Full speech path review for
+                                sync and natural flow.</p>
+                            <p style="margin-bottom: 15px;"><b>Review Notes:</b> Annotate specific timestamps for any
+                                suggested edits.</p>
+                            <div class="action-block action-success">
+                                <p>GOAL: ZERO DEFECT HANDOVER</p>
+                                <p>Final approval for linguistic integrity and formatting excellence.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="yt-handover">
+                <div class="mission-badge"><i class="fas fa-flag-checkered"></i> Handover Phase</div>
+                <h2>Final Delivery Protocols</h2>
+
+                <div class="briefing-card"
+                    style="background: #1e293b; color: white; border: none; box-shadow: 0 20px 50px -15px rgba(15, 23, 42, 0.4);">
+                    <h3 style="margin-bottom: 2rem; font-weight: 900; letter-spacing: -0.5px;"><i class="fas fa-tasks"
+                            style="color: var(--secondary); margin-right: 15px;"></i> Submission Checklists</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                        <div style="border-right: 1px solid rgba(255, 255, 255, 0.1); padding-right: 20px;">
+                            <h4
+                                style="color: var(--secondary); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">
+                                Client A (LB)</h4>
+                            <ul style="list-style: none; font-size: 0.95rem; opacity: 0.8;">
+                                <li style="margin-bottom: 10px;"><i class="fas fa-check"
+                                        style="margin-right: 10px; color: var(--secondary);"></i> LB Portal Package
+                                    Upload</li>
+                                <li style="margin-bottom: 10px;"><i class="fas fa-check"
+                                        style="margin-right: 10px; color: var(--secondary);"></i> Metadata Tag Syncing
+                                </li>
+                                <li><i class="fas fa-check" style="margin-right: 10px; color: var(--secondary);"></i>
+                                    Asset Integrity Receipt</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4
+                                style="color: var(--secondary); margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem;">
+                                Client B (Magnon)</h4>
+                            <ul style="list-style: none; font-size: 0.95rem; opacity: 0.8;">
+                                <li style="margin-bottom: 10px;"><i class="fas fa-check"
+                                        style="margin-right: 10px; color: var(--secondary);"></i> Direct Folder Handover
+                                </li>
+                                <li style="margin-bottom: 10px;"><i class="fas fa-check"
+                                        style="margin-right: 10px; color: var(--secondary);"></i> Custom Metadata XLS
+                                </li>
+                                <li><i class="fas fa-check" style="margin-right: 10px; color: var(--secondary);"></i>
+                                    Submission Logging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-card">
+                    <p style="font-size: 1.1rem;"><b>HANDOVER COMPLETION:</b> Once checklists are cleared, move task
+                        status to <b>"Delivered"</b> and notify the client via the original channel (WhatsApp/Email)
+                        with the delivery link.</p>
+                </div>
+            </section>
+
+            <footer>
+                <p>&copy; 2026 Lingo Chaps | YouTube Specialized Guide</p>
+                <p style="margin-top: 10px; font-size: 0.75rem; opacity: 0.6;">Internal Training Asset - Confidential
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // THEME TOGGLE
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeBtn.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // SCROLL SPY & SMOOTH SCROLL
+        const navLinks = document.querySelectorAll('.nav-item a');
+        const sections = document.querySelectorAll('section');
+
+        window.addEventListener('scroll', () => {
+            let current = "";
+            sections.forEach(s => {
+                const sectionTop = s.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = s.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(l => {
+                l.classList.remove('active');
+                if (l.getAttribute('href') === `#${current}`) {
+                    l.classList.add('active');
+                }
+            });
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetSection.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
